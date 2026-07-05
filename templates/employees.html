@@ -1,0 +1,299 @@
+{% extends 'base.html' %}
+
+{% block title %}Employees{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <h2 class="fw-bold">
+        Employee List
+    </h2>
+
+    <div>
+
+        <a href="/export_pdf" class="btn btn-danger me-2">
+
+            <i class="bi bi-file-earmark-pdf-fill"></i>
+
+            Export PDF
+
+        </a>
+
+        <a href="/export_excel" class="btn btn-success me-2">
+
+            <i class="bi bi-file-earmark-excel-fill"></i>
+
+            Export Excel
+
+        </a>
+
+        <a href="/add_employee" class="btn btn-primary">
+
+            <i class="bi bi-person-plus-fill"></i>
+
+            Add Employee
+
+        </a>
+
+    </div>
+
+</div>
+
+
+<form action="/search" method="GET" class="mb-4">
+
+    <div class="row">
+
+        <div class="col-md-6">
+
+            <input
+                type="text"
+                class="form-control"
+                name="keyword"
+                placeholder="Search Name, Email..."
+
+                value="{{ keyword if keyword else '' }}">
+
+        </div>
+
+        <div class="col-md-4">
+
+            <select
+                class="form-select"
+                name="department">
+
+                <option value="">All Departments</option>
+
+                {% for dept in departments %}
+
+                <option
+                    value="{{ dept.department }}"
+                    {% if selected_department==dept.department %}
+                    selected
+                    {% endif %}>
+
+                    {{ dept.department }}
+
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+        </div>
+
+        <div class="col-md-2">
+
+            <button class="btn btn-primary w-100">
+
+                Search
+
+            </button>
+
+        </div>
+
+    </div>
+
+</form>
+
+
+<div class="card shadow">
+
+    <div class="card-header bg-primary text-white">
+
+        <h5 class="mb-0">
+
+            Employee Records
+
+        </h5>
+
+    </div>
+
+    <div class="card-body p-0">
+
+        <table class="table table-hover table-striped mb-0">
+
+            <thead class="table-dark">
+
+                <tr>
+                    <th>Photo</th>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Department</th>
+                    <th>Salary</th>
+                    <th>Joining Date</th>
+                    <th>Actions</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% if employees %}
+
+                {% for employee in employees %}
+
+                <tr>
+
+    <td>
+
+        {% if employee.photo %}
+
+            <img
+                src="{{ url_for('static', filename='uploads/' + employee.photo) }}"
+                width="60"
+                height="60"
+                class="rounded-circle border"
+                style="object-fit: cover;">
+
+        {% else %}
+
+            <img
+                src="https://via.placeholder.com/60"
+                width="60"
+                height="60"
+                class="rounded-circle">
+
+        {% endif %}
+
+    </td>
+
+    <td>{{ employee.id }}</td>
+
+    <td>{{ employee.name }}</td>
+
+    <td>{{ employee.email }}</td>
+
+    <td>{{ employee.phone }}</td>
+
+    <td>
+
+        <span class="badge bg-info">
+
+            {{ employee.department }}
+
+        </span>
+
+    </td>
+
+    <td>
+
+        ₹ {{ employee.salary }}
+
+    </td>
+
+    <td>
+
+        {{ employee.joining_date }}
+
+    </td>
+
+    <td>
+
+    <a href="/employee/{{ employee.id }}"
+       class="btn btn-info btn-sm">
+
+        <i class="bi bi-eye-fill"></i>
+
+    </a>
+
+    <a href="/edit_employee/{{ employee.id }}"
+       class="btn btn-warning btn-sm">
+
+        <i class="bi bi-pencil-square"></i>
+
+    </a>
+
+    <a href="/delete_employee/{{ employee.id }}"
+       class="btn btn-danger btn-sm"
+       onclick="return confirm('Delete this employee?')">
+
+        <i class="bi bi-trash-fill"></i>
+
+    </a>
+
+    </td>
+
+</tr>
+
+                {% endfor %}
+
+                {% else %}
+
+                <tr>
+
+                    <td colspan="9" class="text-center text-muted p-4">
+
+                        No Employee Found
+
+                    </td>
+
+                </tr>
+
+                {% endif %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% if total_pages > 1 %}
+
+<div class="d-flex justify-content-center mt-4">
+
+    <nav>
+
+        <ul class="pagination">
+
+            <li class="page-item {% if page == 1 %}disabled{% endif %}">
+
+                <a class="page-link"
+                   href="{{ url_for('employees', page=page-1) }}">
+
+                    Previous
+
+                </a>
+
+            </li>
+
+            {% for p in range(1, total_pages + 1) %}
+
+            <li class="page-item {% if p == page %}active{% endif %}">
+
+                <a class="page-link"
+                   href="{{ url_for('employees', page=p) }}">
+
+                    {{ p }}
+
+                </a>
+
+            </li>
+
+            {% endfor %}
+
+            <li class="page-item {% if page == total_pages %}disabled{% endif %}">
+
+                <a class="page-link"
+                   href="{{ url_for('employees', page=page+1) }}">
+
+                    Next
+
+                </a>
+
+            </li>
+
+        </ul>
+
+    </nav>
+
+</div>
+
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,107 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+body{
+    font-family:'Poppins',sans-serif;
+    background:#f4f7fb;
+    color:#333;
+}
+.navbar{
+    background:#1f2937 !important;
+    box-shadow:0 3px 12px rgba(0,0,0,.12);
+}
+
+.navbar-brand{
+    font-weight:700;
+    color:#fff !important;
+}
+
+.navbar-nav .nav-link{
+    color:#e5e7eb !important;
+    transition:.3s;
+}
+
+.navbar-nav .nav-link:hover{
+    color:#38bdf8 !important;
+}
+.container{
+    margin-top:30px;
+    margin-bottom:40px;
+}
+.card{
+    border:none;
+    border-radius:15px;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 18px 35px rgba(0,0,0,.15);
+}
+
+.card-header{
+    font-weight:600;
+}
+.btn{
+    border-radius:10px;
+    font-weight:500;
+    transition:.3s;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+}
+.table{
+    margin-bottom:0;
+}
+
+.table thead{
+    background:#212529;
+    color:white;
+}
+
+.table tbody tr:hover{
+    background:#f1f5f9;
+}
+.form-control,
+.form-select{
+    border-radius:10px;
+    padding:10px;
+}
+
+.form-control:focus,
+.form-select:focus{
+    box-shadow:0 0 8px rgba(13,110,253,.25);
+}
+.badge{
+    font-size:14px;
+    padding:8px 12px;
+}
+.employee-photo{
+    width:55px;
+    height:55px;
+    object-fit:cover;
+    border-radius:50%;
+    border:3px solid #0d6efd;
+}
+.dashboard-card{
+    border-radius:15px;
+    color:white;
+    padding:20px;
+    text-align:center;
+}
+
+.dashboard-card h1{
+    font-size:38px;
+    margin-top:10px;
+}
+
+.dashboard-card h5{
+    font-weight:600;
+}
+canvas{
+    max-height:420px;
+}
+.alert{
+    border-radius:10px;
+}

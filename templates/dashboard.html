@@ -1,0 +1,271 @@
+{% extends 'base.html' %}
+
+{% block title %}Employee Management System{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4">Dashboard</h2>
+
+<div class="row">
+
+    <div class="col-md-3 mb-3">
+        <div class="card bg-primary text-white shadow">
+            <div class="card-body text-center">
+                <h5>Total Employees</h5>
+                <h1>{{ total_employees }}</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card bg-success text-white shadow">
+            <div class="card-body text-center">
+                <h5>Departments</h5>
+                <h1>{{ total_departments }}</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card bg-warning shadow">
+            <div class="card-body text-center">
+                <h5>Total Salary</h5>
+                <h3>₹ {{ total_salary }}</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card bg-danger text-white shadow">
+            <div class="card-body text-center">
+                <h5>Average Salary</h5>
+                <h3>₹ {{ average_salary }}</h3>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row mt-4">
+
+    <div class="col-md-6 mb-3">
+
+        <div class="card shadow border-success">
+
+            <div class="card-body text-center">
+
+                <h5>Highest Salary</h5>
+
+                <h4 class="text-success">
+
+                    {{ highest_employee.name }}
+
+                </h4>
+
+                <h5>
+
+                    ₹ {{ highest_employee.salary }}
+
+                </h5>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-6 mb-3">
+
+        <div class="card shadow border-primary">
+
+            <div class="card-body text-center">
+
+                <h5>New Employees This Month</h5>
+
+                <h2 class="text-primary">
+
+                    {{ new_employees }}
+
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="card shadow mb-4">
+
+    <div class="card-header bg-info text-white">
+
+        <h4 class="mb-0">
+
+            Quick Employee Search
+
+        </h4>
+
+    </div>
+
+    <div class="card-body">
+
+        <form action="/search" method="GET">
+
+            <div class="row">
+
+                <div class="col-md-10">
+
+                    <input
+                        type="text"
+                        class="form-control"
+                        name="keyword"
+                        placeholder="Search employee by Name, Email or Department">
+
+                </div>
+
+                <div class="col-md-2">
+
+                    <button
+                        class="btn btn-primary w-100">
+
+                        Search
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<div class="card shadow mb-4">
+
+    <div class="card-header bg-dark text-white">
+
+        <h4 class="mb-0">
+
+            Latest Employees
+
+        </h4>
+
+    </div>
+
+    <div class="card-body">
+
+        <table class="table table-striped">
+
+            <thead>
+
+                <tr>
+
+                    <th>ID</th>
+
+                    <th>Name</th>
+
+                    <th>Department</th>
+
+                    <th>Salary</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for employee in latest_employees %}
+
+                <tr>
+
+                    <td>{{ employee.id }}</td>
+
+                    <td>{{ employee.name }}</td>
+
+                    <td>{{ employee.department }}</td>
+
+                    <td>₹ {{ employee.salary }}</td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<div class="card shadow">
+
+    <div class="card-header bg-success text-white">
+
+        <h4 class="mb-0">
+
+            Department Wise Employees
+
+        </h4>
+
+    </div>
+
+    <div class="card-body">
+
+        <canvas id="departmentChart"></canvas>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+
+const labels = [
+    {% for row in department_data %}
+    "{{ row.department }}",
+    {% endfor %}
+];
+
+const totals = [
+    {% for row in department_data %}
+    {{ row.total }},
+    {% endfor %}
+];
+
+const ctx = document.getElementById('departmentChart');
+
+new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: 'Employees',
+            data: totals,
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+</script>
+
+{% endblock %}
